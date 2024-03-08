@@ -59,7 +59,7 @@ public class PasrauTranscodageProcessor implements ItemProcessor<FlatPasrauItemR
 
         customFieldSetMapper.ajoutInfosDernierBloc30Restant();
 
-        return  transcodagePasrauDataStore.getAllPersons();
+        return transcodagePasrauDataStore.getAllPersons();
     }
 }
 
