@@ -129,7 +129,6 @@ public class CustomFieldSetMapper implements FieldSetMapper<IndividuData> {
                         && Objects.equals(c.getMontantCotisation(), currentCotisation.getMontantCotisation())
                         && Objects.equals(c.getTauxCotisation(), currentCotisation.getTauxCotisation())
                 );
-
         if (!existingCotisation) {
             currentIndividu.getCotisations().add(currentCotisation);
         }

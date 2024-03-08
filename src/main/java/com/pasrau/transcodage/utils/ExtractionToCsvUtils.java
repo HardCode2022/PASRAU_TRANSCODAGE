@@ -52,6 +52,33 @@ public class ExtractionToCsvUtils {
             return String.format("%s%s", "_" ,lDateYYYYMMDDHHMMSS);
         }
 
+
+    /**
+     * Proceder au transfere de données au niveau de chaque DTOs
+     * @param allDatas allDatas
+     * @param beneficiaireDtos beneficiaireDtos
+     * @param regularisationDtos regularisationDtos
+     * @param versementDtos versementDtos
+     * @param reglementDtos reglementDtos
+     */
+    public static void processAllData(List<? extends List<IndividuData>> allDatas, List<BeneficiaireDto> beneficiaireDtos, List<RegularisationDto> regularisationDtos, List<VersementDto> versementDtos, List<ReglementDto> reglementDtos) {
+        allDatas.forEach(datas -> datas.forEach(individuData -> {
+            // Gerer les bénéficiaires pour extraction
+            ExtractionToCsvUtils.transfereDonneesBeneficiairePourExtraction(beneficiaireDtos, individuData);
+            // Gerer les reglements pour extraction
+            individuData.getReglements().forEach(reglement -> {
+                ExtractionToCsvUtils.transfereDonneesReglementPourExtraction(reglementDtos, reglement);
+            });
+           // Gerer les regularisations pour extraction
+            individuData.getRegularisations().forEach(regularisation -> {
+                ExtractionToCsvUtils.transfereDonneesRegularisationPourExtraction(regularisationDtos, regularisation);
+            });
+            // Gerer les versements pour extraction
+            individuData.getVersements().forEach(versement -> {
+                ExtractionToCsvUtils.transfereDonneesVersementPourExtraction(versementDtos, versement);
+            });
+        }));
+    }
     /**
      * Transfere de données Beneficiaire
      * @param beneficiaireDtos beneficiaireDtos
@@ -83,17 +110,17 @@ public class ExtractionToCsvUtils {
      * @param regl regl
      */
     public static void transfereDonneesReglementPourExtraction(List<ReglementDto> reglementDtos, Reglement regl) {
-            ReglementDto reglementdto = new ReglementDto();
-            reglementdto.setIdCrm(regl.getIdCrm());
-            reglementdto.setMontantPas(regl.getMontantPas());
-            reglementdto.setMontantNet(regl.getMontantNet());
-            reglementdto.setMontantRnf(regl.getMontantRnf());
-            reglementdto.setMontanRetenuSource(regl.getMontanRetenuSource());
-            reglementdto.setDateReglement(regl.getDateReglement());
-            reglementdto.setClasserevenu(regl.getClasserevenu());
-            reglementdto.setTypeTaux(regl.getTypeTaux());
-            reglementdto.setTauxPas(regl.getTauxPas());
-            reglementDtos.add(reglementdto);
+        ReglementDto reglementdto = new ReglementDto();
+        reglementdto.setIdCrm(regl.getIdCrm());
+        reglementdto.setMontantPas(regl.getMontantPas());
+        reglementdto.setMontantNet(regl.getMontantNet());
+        reglementdto.setMontantRnf(regl.getMontantRnf());
+        reglementdto.setMontanRetenuSource(regl.getMontanRetenuSource());
+        reglementdto.setDateReglement(regl.getDateReglement());
+        reglementdto.setClasserevenu(regl.getClasserevenu());
+        reglementdto.setTypeTaux(regl.getTypeTaux());
+        reglementdto.setTauxPas(regl.getTauxPas());
+        reglementDtos.add(reglementdto);
     }
 
     /**
@@ -126,32 +153,5 @@ public class ExtractionToCsvUtils {
         versementDto.setIdDroit(versement.getIdDroit());
         versementDto.setMontantBrut(versement.getMontantBrut());
         versementDtos.add(versementDto);
-    }
-
-    /**
-     * Proceder au transfere de données au niveau de chaque DTOs
-     * @param allDatas allDatas
-     * @param beneficiaireDtos beneficiaireDtos
-     * @param regularisationDtos regularisationDtos
-     * @param versementDtos versementDtos
-     * @param reglementDtos reglementDtos
-     */
-    public static void processAllData(List<? extends List<IndividuData>> allDatas, List<BeneficiaireDto> beneficiaireDtos, List<RegularisationDto> regularisationDtos, List<VersementDto> versementDtos, List<ReglementDto> reglementDtos) {
-        allDatas.forEach(datas -> datas.forEach(individuData -> {
-            // Gerer les bénéficiaires pour extraction
-            ExtractionToCsvUtils.transfereDonneesBeneficiairePourExtraction(beneficiaireDtos, individuData);
-            // Gerer les reglements pour extraction
-            individuData.getReglements().forEach(reglement -> {
-                ExtractionToCsvUtils.transfereDonneesReglementPourExtraction(reglementDtos, reglement);
-            });
-           // Gerer les regularisations pour extraction
-            individuData.getRegularisations().forEach(regularisation -> {
-                ExtractionToCsvUtils.transfereDonneesRegularisationPourExtraction(regularisationDtos, regularisation);
-            });
-            // Gerer les versements pour extraction
-            individuData.getVersements().forEach(versement -> {
-                ExtractionToCsvUtils.transfereDonneesVersementPourExtraction(versementDtos, versement);
-            });
-        }));
     }
 }
